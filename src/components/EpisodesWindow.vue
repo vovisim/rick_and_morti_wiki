@@ -157,5 +157,11 @@ a {
   text-decoration: none; /* Убирает подчеркивание */
   color: inherit; /* Устанавливает цвет текста такой же, как у родителя */
 }
+li{
+  width: max-content;
+  &:hover {
+    color: #1A9DB3;
+  }
+}
 
 </style>

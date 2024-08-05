@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="{ name: 'MoreInfo', params: { id: character.id }}" >{{ character.name }}</router-link>
+  <router-link :to="{ name: 'MoreInfo', params: { id: character.id }}" ><p>{{ character.name }}</p></router-link>
 </template>
 
 <script>
@@ -31,5 +31,10 @@ export default {
 </script>
 
 <style scoped>
-
+p:hover {
+  color: #1A9DB3;
+}
+p{
+  width: max-content;
+}
 </style>

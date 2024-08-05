@@ -1,6 +1,7 @@
 <template>
   <div class="locations">
     <div class="text-center head">Персонажи</div>
+    {{ windowWidth }}
     <ul class="align-content-center">
       <li v-for="(location) in locations" :key="location.id" class="align-items-center">
         <router-link :to="{name: 'MoreInfoLocations', params: { id: location.id }}">
@@ -26,30 +27,15 @@ export default {
   data () {
     return {
       this_page: 1,
+      quantity_locations: 24,
+      windowWidth: window.innerWidth,
       max_page: 6,
-      locations: [
-        {
-          id: 1,
-          name: 'Earth (C-137)',
-          type: 'Planet'
-        },
-        {
-          id: 2,
-          name: 'Abadango',
-          type: 'Cluster',
-          dimension: 'unknown',
-          residents: [
-            'https://rickandmortyapi.com/api/character/6'
-          ],
-          url: 'https://rickandmortyapi.com/api/location/2',
-          created: '2017-11-10T13:06:38.182Z'
-        }
-      ]
+      locations: []
     }
   },
   methods: {
     async GetLocations () {
-      const Locations = await GetLocations(this.getNumbersBetween(this.this_page * 25 - 25, (this.this_page * 25) + 1))
+      const Locations = await GetLocations(this.getNumbersBetween(this.this_page * this.quantity_locations - this.quantity_locations, (this.this_page * this.quantity_locations) + 1))
       console.log(Locations)
       this.locations = Locations.data
     },
@@ -62,17 +48,43 @@ export default {
     },
     handlePageChange (page) {
       this.this_page = page
+    },
+    updateWindowWidth () {
+      this.windowWidth = window.innerWidth
+    },
+    QuantityCharacter (width) {
+      const minLocations = 25
+      const widthCharacter = 369
+      const locationsInRow = Math.floor(width / widthCharacter)
+      let locations = minLocations
+
+      while (locations % locationsInRow !== 0) {
+        locations++
+      }
+
+      return locations + 1
     }
   },
   created () {
+    this.updateWindowWidth()
+    this.quantity_locations = this.QuantityCharacter(this.windowWidth - 808)
     this.GetLocations()
-    console.log(this.GetLocations)
   },
   watch: {
     this_page () {
       this.GetLocations()
       console.log(this.GetLocations)
     }
+  },
+  mounted () {
+    window.addEventListener('resize', this.updateWindowWidth)
+    this.quantity_locations = this.QuantityCharacter(this.windowWidth - 808)
+    window.addEventListener('resize', this.GetLocations)
+  },
+  beforeUnmount () {
+    window.removeEventListener('resize', this.updateWindowWidth)
+    this.quantity_locations = this.QuantityCharacter(this.windowWidth - 808)
+    window.addEventListener('resize', this.GetLocations)
   }
 }
 </script>
@@ -89,6 +101,7 @@ ul {
     width: max-content;
   }
 }
+
 a {
   text-decoration: none; /* Убирает подчеркивание */
   color: inherit; /* Устанавливает цвет текста такой же, как у родителя */

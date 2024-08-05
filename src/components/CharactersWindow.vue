@@ -25,14 +25,14 @@ export default {
     return {
       characters: [],
       this_page: 1,
-      max_page: 59,
+      max_page: Math.floor(826 / this.quantity_characters),
       quantity_characters: 14,
       windowWidth: window.innerWidth
     }
   },
   methods: {
     async GetCharacters () {
-      const Characters = await GetCharacter(this.getNumbersBetween(this.this_page * 14 - 14, (this.this_page * 14) + 1))
+      const Characters = await GetCharacter(this.getNumbersBetween(this.this_page * this.quantity_characters - this.quantity_characters, (this.this_page * this.quantity_characters) + 1))
       console.log(Characters)
       this.characters = Characters.data
     },
@@ -48,11 +48,24 @@ export default {
     },
     updateWindowWidth () {
       this.windowWidth = window.innerWidth
+    },
+    QuantityCharacter (width) {
+      const minCharacters = 14
+      const widthCharacter = 358
+      const charactersInRow = Math.floor(width / widthCharacter)
+      let characters = minCharacters
+
+      while (characters % charactersInRow !== 0) {
+        characters++
+      }
+      this.max_page = Math.floor(826 / characters) + 1
+      return characters
     }
   },
   created () {
+    this.updateWindowWidth()
+    this.quantity_characters = this.QuantityCharacter(this.windowWidth)
     this.GetCharacters()
-    console.log(this.GetCharacters)
   },
   watch: {
     this_page () {
@@ -62,9 +75,13 @@ export default {
   },
   mounted () {
     window.addEventListener('resize', this.updateWindowWidth)
+    this.quantity_characters = this.QuantityCharacter(this.windowWidth)
+    window.addEventListener('resize', this.GetCharacters)
   },
   beforeUnmount () {
     window.removeEventListener('resize', this.updateWindowWidth)
+    this.quantity_characters = this.QuantityCharacter(this.windowWidth)
+    window.addEventListener('resize', this.GetCharacters)
   }
 }
 
@@ -90,6 +107,7 @@ ul {
     margin-bottom: 30px;
     margin-top: 30px;
     padding: 0 50px;
+
   }
 }
 

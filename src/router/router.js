@@ -11,7 +11,8 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      component: CharactersWindow
+      component: CharactersWindow,
+      name: 'Characters'
     },
     {
       path: '/episodes',
