@@ -24,8 +24,7 @@ export default {
     display: flex;
     align-items: center;
     &{
-      margin: 10px;
-      margin-left: 100px;
+      margin: 10px 50px;
     }
   }
   a {

@@ -5,8 +5,16 @@
     <p> Статус: {{ character.status }}</p>
     <p> Вид: {{ character.species }}</p>
     <p> Пол: {{ character.gender }}</p>
-    <router-link :to="{ name: 'MoreInfoLocations', params: { id: (character.origin.url).lastIndexOf('/') }}"><p class="a"> Родная планета: {{ character.origin.name }}</p></router-link>
-    <router-link :to="{ name: 'MoreInfoLocations', params: { id: (character.location.url).lastIndexOf('/') }}"><p class="a"> Находиться сейчас: {{ character.location.name }}</p></router-link>
+    <div class="" v-if="this.character.origin.url !== ''">
+      <router-link :to="{ name: 'MoreInfoLocations', params: { id: (this.character.origin.url.split('/').pop()) }}"><p
+        class="a"> Родная планета:
+        {{ character.origin.name }}</p></router-link>
+    </div>
+    <div class="" v-if="this.character.location.url !== ''">
+    <router-link :to="{ name: 'MoreInfoLocations', params: { id: (this.character.location.url.split('/').pop())  }}"><p
+      class="a"> Находиться сейчас:
+      {{ character.location.name }}</p></router-link>
+    </div>
   </div>
 </template>
 
@@ -53,6 +61,7 @@ img {
   border: #1A9DB3 solid 2px;
   border-radius: 12px;
 }
+
 p {
   width: max-content;
 }
@@ -61,6 +70,7 @@ a {
   text-decoration: none; /* Убирает подчеркивание */
   color: inherit; /* Устанавливает цвет текста такой же, как у родителя */
 }
+
 .a:hover {
   color: #1A9DB3;
 }

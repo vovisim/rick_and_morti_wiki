@@ -1,8 +1,7 @@
 <template>
   <div class="locations">
     <div class="text-center head">Персонажи</div>
-    {{ windowWidth }}
-    <ul class="align-content-center">
+    <ul class="justify-content-center">
       <li v-for="(location) in locations" :key="location.id" class="align-items-center">
         <router-link :to="{name: 'MoreInfoLocations', params: { id: location.id }}">
           <location-component :name="location.name" :type="location.type"/>
@@ -27,7 +26,7 @@ export default {
   data () {
     return {
       this_page: 1,
-      quantity_locations: 24,
+      quantity_locations: 1,
       windowWidth: window.innerWidth,
       max_page: 6,
       locations: []
@@ -55,14 +54,14 @@ export default {
     QuantityCharacter (width) {
       const minLocations = 25
       const widthCharacter = 369
-      const locationsInRow = Math.floor(width / widthCharacter)
+      const locationsInRow = Math.floor((width - (width - 1476)) / widthCharacter)
       let locations = minLocations
 
       while (locations % locationsInRow !== 0) {
         locations++
       }
 
-      return locations + 1
+      return locations
     }
   },
   created () {
@@ -81,7 +80,7 @@ export default {
     this.quantity_locations = this.QuantityCharacter(this.windowWidth - 808)
     window.addEventListener('resize', this.GetLocations)
   },
-  beforeUnmount () {
+  unmounted () {
     window.removeEventListener('resize', this.updateWindowWidth)
     this.quantity_locations = this.QuantityCharacter(this.windowWidth - 808)
     window.addEventListener('resize', this.GetLocations)

@@ -17,7 +17,7 @@
             <a class="nav-link" href="/locations">Локации</a>
           </li>
         </ul>
-        <form class="d-flex" role="search">
+        <form class="d-flex search" role="search">
           <input class="form-control me-2 custom-search"  type="search" placeholder="Поиск" aria-label="Найти">
           <button class="btn btn-outline-success custom-button" type="submit">Найти</button>
         </form>
@@ -54,5 +54,8 @@ export default {
   }
   .nav-link{
     margin: 8px 70px;
+  }
+  .search{
+    opacity: 0;
   }
 </style>
